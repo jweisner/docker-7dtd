@@ -10,11 +10,8 @@ COPY start.sh /home/steam/start.sh
 USER root
 RUN set -x \
  && chown steam:steam /home/steam/start.sh \
- && chmod 755 /home/steam/start.sh \
- && mkdir /home/steam/overrides
+ && chmod 755 /home/steam/start.sh
 USER steam
-
-VOLUME /home/steam/overrides
 
 WORKDIR /data
 
