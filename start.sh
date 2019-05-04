@@ -4,6 +4,8 @@ APPID=294420
 FLAGFILE=/data/.upgrade_flag
 steamcmd=/home/steam/steamcmd/linux32/steamcmd
 
+$steamcmd +quit
+
 if [ -f ${FLAGFILE} ];then
     echo "Found flag file ${FLAGFILE}. Skipping install/upgrade check."
 else
