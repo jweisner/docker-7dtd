@@ -3,6 +3,7 @@ FROM jwei/steamcmd:latest
 LABEL maintainer="jesse@weisner.ca"
 
 ENV CONFIG_FILE /data/serverconfig.xml
+ENV CHECK_UPDATE 0
 
 COPY start.sh /home/steam/start.sh
 

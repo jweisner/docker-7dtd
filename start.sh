@@ -16,6 +16,8 @@ else
         +quit
 fi
 
+[ "${CHECK_UPDATE}" = "0" ] && touch $FLAGFILE
+
 /data/7DaysToDieServer.x86_64 \
   -logfile /dev/stdout \
   -configfile=$CONFIG_FILE \
