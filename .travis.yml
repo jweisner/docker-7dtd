@@ -1,0 +1,10 @@
+language: generic
+
+services:
+  - docker
+
+script:
+  - docker build -t jwei/docker-steamcmd .
+
+on:
+  branch: master
