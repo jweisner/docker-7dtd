@@ -54,7 +54,7 @@ if [ ! -f "$SAVEDIR/serveradmin.xml" ];then
 fi
 
 echo "Syncing override files..."
-rsync -av $OVERRIDES/ $SERVERBASE/
+rsync -a $OVERRIDES/ $SERVERBASE/
 
 LD_LIBRARY_PATH=/home/steam/linux64 "$SERVERBASE/7DaysToDieServer.x86_64" \
   -logfile /dev/stdout \
