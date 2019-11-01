@@ -2,7 +2,7 @@
 
 APPID=294420
 FLAGFILE=/data/.upgrade_flag
-steamcmd=/home/steam/steamcmd/linux32/steamcmd
+steamcmd=/home/steam/steamcmd/steamcmd.sh
 
 if [ ! -d /data/overrides ];then
     echo "Creating overrides directory."
