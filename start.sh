@@ -46,7 +46,7 @@ fi
 [ "${CHECK_UPDATE}" = "0" ] && touch ${FLAGFILE}
 
 if [ ! -f "$SERVERBASE/serverconfig.xml" ];then
-    echo "Default config $SERVERBASE/serverconfig.xml file not found. It will be created on the first startup. Stop the server after the first startup and edit serverconfig.xml with your local customizations." | fold -w 80 -s
+    echo "Default config $SERVERBASE/serverconfig.xml file not found. It will be created on the first startup. Stop the server after the first startup and edit $OVERRIDES/serverconfig.xml with your local customizations." | fold -w 80 -s
 fi
 
 if [ ! -f "$SAVEDIR/serveradmin.xml" ];then
