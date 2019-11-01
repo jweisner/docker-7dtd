@@ -1,15 +1,15 @@
 #!/bin/bash
 
 APPID=294420
-FLAGFILE=/steamlibrary/.upgrade_flag
-steamcmd=/home/steam/steamcmd/steamcmd.sh
+FLAGFILE=$HOME/.upgrade_flag
+OVERRIDES=$HOME/overrides
+SERVERBASE=$HOME/7dtd
+steamcmd=$HOME/steamcmd.sh
+SAVEDIR=$HOME/.local/share/7DaysToDie/Saves
 
-if [ ! -d /steamlibrary/overrides ];then
-    echo "Creating overrides directory."
-    echo "Copy customized files from /steamlibrary into /steamlibrary/overides"
-    echo "keeping the subpath intact. These files will replace"
-    echo "game updates from Steam."
-    mkdir /steamlibrary/overrides
+if [ ! -d $OVERRIDES ];then
+    echo "Creating overrides directory. Copy customized files from $SERVERBASE into $OVERRIDES keeping the subpath intact. These files will replace game updates from Steam." | fold -w 80 -s
+    mkdir $OVERRIDES
 fi
 
 if [ -f ${FLAGFILE} ] && [ "${CHECK_UPDATE}" != "0" ];then
@@ -18,7 +18,7 @@ if [ -f ${FLAGFILE} ] && [ "${CHECK_UPDATE}" != "0" ];then
 fi
 
 if [ -f ${FLAGFILE} ];then
-    echo "Found flag file ${FLAGFILE}. Skipping steam client install/upgrade check."
+    echo "Found flag file ${FLAGFILE}. Skipping steam client install/upgrade check." | fold -w 80 -s
 else
     echo "Installing/upgrading steam client..."
     $steamcmd +quit
@@ -26,41 +26,39 @@ else
 fi
 
 if [ -f ${FLAGFILE} ];then
-    echo "Found flag file ${FLAGFILE}. Skipping game server install/upgrade check."
+    echo "Found flag file ${FLAGFILE}. Skipping game server install/upgrade check." | fold -w 80 -s
 else
-    if [ "${CONFIG_FILE}" = "/steamlibrary/serverconfig.xml" ] && [ -f /steamlibrary/serverconfig.xml ];then
-        echo "Backing up ${CONFIG_FILE} into overrides..."
-        cp /steamlibrary/serverconfig.xml /steamlibrary/overrides/serverconfig.xml
+    if [ -f "$SERVERBASE/serverconfig.xml" ];then
+        echo "Backing up serverconfig.xml into overrides..."
+        cp "$SERVERBASE/serverconfig.xml" $OVERRIDES/serverconfig.xml
     fi
 
     echo "Installing/upgrading game server..."
     $steamcmd \
         +login anonymous \
-        +force_install_dir /steamlibrary \
+        +force_install_dir $SERVERBASE \
         +app_update ${APPID} validate \
         +quit
     echo -e "\n"
 fi
 
+
 [ "${CHECK_UPDATE}" = "0" ] && touch ${FLAGFILE}
 
-if [ "${CONFIG_FILE}" != "/steamlibrary/serverconfig.xml" ] && [ ! -f "${CONFIG_FILE}" ];then
-    echo "Custom config file ${CONFIG_FILE} not found!" >&2
-    exit 1
+if [ ! -f "$SERVERBASE/serverconfig.xml" ];then
+    echo "Default config $SERVERBASE/serverconfig.xml file not found. It will be created on the first startup. Stop the server after the first startup and edit serverconfig.xml with your local customizations." | fold -w 80 -s
 fi
 
-if [ "${CONFIG_FILE}" = "/steamlibrary/serverconfig.xml" ] && [ ! -f "${CONFIG_FILE}" ];then
-    echo "Default config file not found. It will be created on"
-    echo "the first startup. Stop the server after the first startup"
-    echo "and edit ${CONFIG_FILE} with your local customizations."
+if [ ! -f "$SAVEDIR/serveradmin.xml" ];then
+    echo "Default admin file $SAVEDIR/serveradmin.xml not found. It will be created on the first startup. Stop the server after the first startup and edit $SAVEDIR/serverconfig.xml with your local customizations." | fold -w 80 -s
 fi
 
 echo "Syncing override files..."
-rsync -av /steamlibrary/overrides/ /steamlibrary/ --exclude overrides/
+rsync -av $OVERRIDES/ $SERVERBASE/
 
-/steamlibrary/7DaysToDieServer.x86_64 \
+LD_LIBRARY_PATH=/home/steam/linux64 "$SERVERBASE/7DaysToDieServer.x86_64" \
   -logfile /dev/stdout \
-  -configfile=${CONFIG_FILE} \
+  -configfile="$SERVERBASE/serverconfig.xml" \
   -quit \
   -batchmode \
   -nographics \
