@@ -1,8 +1,6 @@
 FROM jwei/steamcmd:latest
 
-LABEL maintainer="jesse@weisner.ca"
-
-ENV CONFIG_FILE /data/serverconfig.xml
+ENV CONFIG_FILE /steamlibrary/serverconfig.xml
 ENV CHECK_UPDATE 0
 
 COPY start.sh /home/steam/start.sh
@@ -13,6 +11,4 @@ RUN set -x \
  && chmod 755 /home/steam/start.sh
 USER steam
 
-WORKDIR /data
-
-CMD /home/steam/start.sh
+CMD [ "/home/steam/start.sh" ]
