@@ -50,7 +50,7 @@ if [ ! -f "$SERVERBASE/serverconfig.xml" ];then
 fi
 
 if [ ! -f "$SAVEDIR/serveradmin.xml" ];then
-    echo "Default admin file $SAVEDIR/serveradmin.xml not found. It will be created on the first startup. Stop the server after the first startup and edit $OVERRIDES/serverconfig.xml with your local customizations." | fold -w 80 -s
+    echo "Default admin file $SAVEDIR/serveradmin.xml not found. It will be created on the first startup. Stop the server after the first startup and edit $SAVEDIR/serverconfig.xml with your local customizations." | fold -w 80 -s
 fi
 
 echo "Syncing override files..."
